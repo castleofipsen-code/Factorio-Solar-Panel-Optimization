@@ -1,7 +1,6 @@
 Hi!
 
-As I mentioned in the video, this code is not the most clean you will ever see, but you can probably figure out how it works. Just in case, I'm leaving
-this as a quick guideline on how to run your first optimization.
+As I mentioned in the video, this code is not the most clean you will ever see, but you can probably figure out how it works. Just in case, I'm leaving this as a quick guideline on how to run your first optimization.
 
  /parameters.py                             Holds most of the main problem constants. You probably do not want to touch this too much.
  /plot_solution.py                          Can take either a path string or a blueprint string and plot the panel just as you see in the video.
