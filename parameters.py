@@ -1,0 +1,19 @@
+# Solar array geometry fundamentals
+GRID_SIZE = 50
+SOLAR_SIZE = 3
+ACCUMULATOR_SIZE = 2
+SUBSTATION_SIZE = 2
+ROBOPORT_SIZE = 4
+
+
+# Power Generation on Nauvis
+DAY_DURATION = 7*60
+ETA_S = 0.70
+C_ON = 0.24
+ACCUMULATOR_CHARGE = 5e3
+SOLAR_PANEL_POWER = 60
+
+
+# Optimization settings / NOT CURRENTLY USED
+ROBOPORT_NUMBER = 2
+SUBSTATION_MAX = 36

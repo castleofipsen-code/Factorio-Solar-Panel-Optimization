@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.venv/
+.vscode/
+.idea/
+.env
+.env.*
+*.lic
+*.pem
+*.key
+old/
+
+# Solver output is local and can become very large.
+results/
+
+# Rendering scripts, source runs, and generated frames are local-only.
+render/
+render_*.py
