@@ -1,88 +1,63 @@
 # Factorio Solar Panel Optimization
 
-Hi! This repository contains the optimization code discussed in the video. It is
-intended as a practical, tutorial-style introduction to the models, rather than
-as a polished software package.
+Hi!
 
-If you are running the project for the first time, start with the fixed-network
-solver. It produces useful results quickly and is the easiest model to follow.
+As I mentioned in the video, this code is not the cleanest you will ever see,
+but you can probably figure out how it works. Just in case, I'm leaving this as
+a quick guideline on how to run your first optimization.
 
-## Getting started
+## Useful files
 
-Install the Python dependencies:
+- [`parameters.py`](parameters.py) holds most of the main problem constants. You
+  probably do not want to touch this too much.
+- [`plot_solution.py`](plot_solution.py) can take either a path string or a
+  blueprint string and plot the panel just as you see in the video.
+- [`print_blueprint.py`](print_blueprint.py) just prints out a blueprint from a
+  path. I left that just so you can see how the blueprint parser works.
 
-```bash
-python -m pip install numpy scipy matplotlib
-```
-
-Then run the fixed-network example:
-
-```bash
-python solve_system_highs_fixed_network.py
-```
-
-The solver writes its result to the local `results/` folder. To plot a saved
-solution, set `solution_path` near the top of [`plot_solution.py`](plot_solution.py)
-and run:
-
-```bash
-python plot_solution.py
-```
-
-Most settings—including thread count, time limit, building limits, and input
-paths—are deliberately kept near the top of each solver script so they are easy
-to find and edit.
-
-## Solvers
+## Main solvers
 
 ### [`solve_system_highs_fixed_network.py`](solve_system_highs_fixed_network.py)
 
-The recommended starting point. This is a **Stage B** solver: it takes a fixed
-electrical network and optimizes the solar-panel and accumulator packing around
-it. A good example network is included in
-[`support/sample_network.txt`](support/sample_network.txt).
-
-The example is limited to 100 seconds and should begin producing results
-quickly.
+This is what you want to start with. It takes in a fixed electric network, and
+I left one pretty good one for you to use. The optimization is limited to just
+100 seconds, and you should see results right away, which you can plot with
+`plot_solution.py`. This is what I call a Stage B solver: it takes in a network
+and solves the packing around it.
 
 ### [`solve_system_highs_stage_A.py`](solve_system_highs_stage_A.py)
 
-A simple **Stage A** solver for generating electrical networks. The default run
-is limited to 300 seconds. Its score is the number of network tiles divided by
-four, so it can be read approximately as an equivalent substation count.
-
-As configured, it should find networks scoring roughly 8 to 8.5. These can be
-used as inputs to the fixed-network Stage B solver and should make an 8232 kW
-array reasonably accessible.
+This is a Stage A solver, so you can generate your own networks. It is currently
+set to run for only 300 seconds, just so you can see how it works. The score is
+the number of tiles used by the network divided by 4, so it can be interpreted
+as the number of substations. If you run it as is, you should be able to get an
+8 to 8.5 result, which you can then plug into the previous fixed-network solver
+to get an easy 8232 kW solution.
 
 ### [`solve_system_highs.py`](solve_system_highs.py)
 
-The complete **Stage A+B** model, including electrical connectivity. It requires
-no network input, but the full mixed-integer problem is extremely demanding.
-With HiGHS, an incumbent may take days to appear and a complete run may take
-much longer.
+This is the real-deal Stage A+B solver with the full problem, including
+connectivity, so it takes forever to run but will give you solutions without an
+electric-network input. When I say forever, I mean forever. On a single core,
+using HiGHS, you might be waiting for days until you see an incumbent, or weeks
+for more progress. You probably want to find a parallel-capable solver to run
+this well, but if you have time, you can theoretically do it with HiGHS.
 
 ### [`staged_solver_highs.py`](staged_solver_highs.py)
 
-The experimental staged search used to find the 8316 kW permanent-roboport
-setup shown in the video. It combines network discovery, packing bounds, and
-penalty-guided search. It is currently specialized for fixed building counts
-and uses the included files in [`staged_seeds/`](staged_seeds/) as starting
-points, but it can be adapted to related layouts.
+This is the staged solver I used to find the 8316 permanent-roboport setup in
+the video. It is currently made for that specific purpose, so it takes advantage
+of fixed building counts and also uses seeds I generated with the other two
+solvers. You can make modifications to suit your needs and solve other similar
+problems, but its not as easy as changing variables, this is not made fully genetic, but specifically intended at solving the recalcitrant 8316 problem.
 
-## Other useful files
+## Model constructors
 
-| File | Purpose |
-| --- | --- |
-| [`parameters.py`](parameters.py) | Main problem and building constants. You normally do not need to change these. |
-| [`plot_solution.py`](plot_solution.py) | Plots either a saved `.sol` file or a pasted Factorio blueprint string. |
-| [`print_blueprint.py`](print_blueprint.py) | Converts a saved solution into a Factorio blueprint string and prints it. |
-| [`objectives.py`](objectives.py) | Model constructors for Stage B and combined Stage A+B optimization. |
-| [`coverage_objectives.py`](coverage_objectives.py) | Model constructors for Stage A connectivity and tileability. |
-| [`support/`](support/) | Plotting, blueprint, solution-loading, and sample-data helpers. |
-
-The constructor modules are the most technical part of the project. It is worth
-becoming familiar with the smaller solver scripts before modifying them.
+- [`objectives.py`](objectives.py) contains most of my constructors for Stage B
+  or Stage A+B. Do not touch this unless you are familiar with everything else.
+- [`coverage_objectives.py`](coverage_objectives.py) contains constructors for
+  Stage A (connectivity and tileability). Again, do not touch this until you are
+  familiar with the formulation.
 
 ## License
 
