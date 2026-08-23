@@ -12,9 +12,9 @@ plt.rcParams.update({
 
 transparent_figure = False
 show_network_score = True #False to show empty tiles
-permanent_robo = False
+permanent_robo = True
 
-grid = 50
+grid = 100
 
 
 if grid == 50:

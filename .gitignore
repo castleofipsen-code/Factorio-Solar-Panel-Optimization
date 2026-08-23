@@ -12,6 +12,7 @@ old/
 
 # Solver output is local and can become very large.
 results/
+solved/
 
 # Rendering scripts, source runs, and generated frames are local-only.
 render/
