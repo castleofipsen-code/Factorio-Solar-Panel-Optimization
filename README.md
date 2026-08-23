@@ -14,6 +14,9 @@ a quick guideline on how to run your first optimization.
   blueprint string and plot the panel just as you see in the video.
 - [`print_blueprint.py`](print_blueprint.py) just prints out a blueprint from a
   path. I left that just so you can see how the blueprint parser works.
+- [`solar_vs_substation.py`](solar_vs_substation.py) plots the optimality-proof
+  charts, showing either the required electric-network efficacy or the number
+  of empty tiles.
 
 ## Main solvers
 
